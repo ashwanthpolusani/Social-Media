@@ -1,3 +1,29 @@
+.navbar {
+  background: #222;
+  padding: 10px;
+}
+.navbar a {
+  color: white;
+  margin-right: 10px;
+  text-decoration: none;
+}
+.postCard {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin: 15px;
+  border-radius: 6px;
+}
+.userCard {
+  border: 1px solid #aaa;
+  padding: 10px;
+  margin: 10px;
+}
+.comments {
+  margin-top: 10px;
+  padding-left: 15px;
+  border-left: 2px solid #ccc;
+}
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
