@@ -1,30 +1,61 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-function Profile() {
-  const [username, setUsername] = useState("demo_user");
-  const [bio, setBio] = useState("This is my profile.");
+function Profile({ currentUserId }) {
+  const [username, setUsername] = useState("");
+  const [bio, setBio] = useState("");
   const [editing, setEditing] = useState(false);
 
-  const handleUpdate = () => {
-    // send update to backend
+  useEffect(() => {
+    if (!currentUserId) return;
+    fetch(`/api/users/${currentUserId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setUsername(data.username || "");
+        setBio(data.bio || "");
+      });
+  }, [currentUserId]);
+
+  const handleUpdate = async () => {
+    await fetch(`/api/users/${currentUserId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, bio }),
+    });
     setEditing(false);
     alert("Profile updated!");
   };
 
   return (
-    <div>
-      <h1>User Profile</h1>
+    <div className="profile-container">
+      <h1 className="profile-title">User Profile</h1>
       {editing ? (
-        <div>
-          <input value={username} onChange={(e) => setUsername(e.target.value)} />
-          <textarea value={bio} onChange={(e) => setBio(e.target.value)} />
-          <button onClick={handleUpdate}>Save</button>
+        <div className="profile-edit">
+          <input
+            className="profile-input"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <textarea
+            className="profile-textarea"
+            value={bio}
+            onChange={(e) => setBio(e.target.value)}
+          />
+          <button className="profile-save-btn" onClick={handleUpdate}>
+            Save
+          </button>
         </div>
       ) : (
-        <div>
-          <p><strong>{username}</strong></p>
-          <p>{bio}</p>
-          <button onClick={() => setEditing(true)}>Edit Profile</button>
+        <div className="profile-view">
+          <p className="profile-username">
+            <strong>{username}</strong>
+          </p>
+          <p className="profile-bio">{bio}</p>
+          <button
+            className="profile-edit-btn"
+            onClick={() => setEditing(true)}
+          >
+            Edit Profile
+          </button>
         </div>
       )}
     </div>

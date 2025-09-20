@@ -53,4 +53,31 @@ router.put("/:id/unfollow", async (req, res) => {
   res.json({ message: "Unfollowed user" });
 });
 
+// Get single user profile
+router.get("/:id", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id).select("-__v");
+    if (!user) return res.status(404).json({ error: "User not found" });
+    res.json(user);
+  } catch (err) {
+    res.status(404).json({ error: "User not found" });
+  }
+});
+
+// Update user profile
+router.put("/:id", async (req, res) => {
+  try {
+    const { username, bio } = req.body;
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      { username, bio },
+      { new: true }
+    );
+    if (!user) return res.status(404).json({ error: "User not found" });
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 export default router;
