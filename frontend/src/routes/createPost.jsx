@@ -14,13 +14,14 @@ function CreatePost() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Send description + (later image via multer)
-    const postData = { description };
+    const formData = new FormData();
+    formData.append("description", description);
+    if (file) formData.append("image", file);
+    formData.append("user", "665b8c2e2e2e2e2e2e2e2e2e"); // replace with real user id
 
-    await fetch("http://localhost:5000/api/posts", {
+    await fetch("/api/posts", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(postData),
+      body: formData,
     });
 
     alert("Post created!");

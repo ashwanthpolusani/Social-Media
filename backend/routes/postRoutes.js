@@ -4,13 +4,12 @@ import upload from "../middleware/upload.js";
 
 const router = express.Router();
 
-
 // CREATE Post
 router.post("/", upload.single("image"), async (req, res) => {
   try {
     const { description, user } = req.body;
     const newPost = new Post({
-      image: req.file.path,
+      image: req.file ? req.file.filename : undefined, // store only filename
       description,
       user,
     });

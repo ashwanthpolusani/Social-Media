@@ -4,18 +4,28 @@ function UserList() {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/users")
+    fetch("/api/users")
       .then((res) => res.json())
       .then(setUsers);
   }, []);
 
+  const DUMMY_USER_ID = "665b8c2e2e2e2e2e2e2e2e2e"; // replace with real user id
+
   const handleFollow = async (id) => {
-    await fetch(`http://localhost:5000/api/users/${id}/follow`, { method: "PUT" });
+    await fetch(`/api/users/${id}/follow`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId: DUMMY_USER_ID }),
+    });
     alert("Followed!");
   };
 
   const handleUnfollow = async (id) => {
-    await fetch(`http://localhost:5000/api/users/${id}/unfollow`, { method: "PUT" });
+    await fetch(`/api/users/${id}/unfollow`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId: DUMMY_USER_ID }),
+    });
     alert("Unfollowed!");
   };
 
